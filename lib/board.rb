@@ -23,12 +23,32 @@ class Board
 
   #adds a specific piece to a specific column
   def add_piece(column, token)
-    column -= 1
-    empty_row = -1
-    @board.each_with_index do |a, i|
-      empty_row += 1 if a[column] == ' '
-    end
-    @board[empty_row][column] = token
+    empty_row = get_row(column) - 1
+    @board[empty_row][column - 1] = token
   end
 
+  #checks if a column is full
+  def column_full?(column)
+    column -= 1
+    @board.none? { |a| a[column] == ' '}
+  end
+
+  #gets row of top piece in column
+  def get_row(column)
+    column -= 1
+    row = 0
+    @board.each do |a|
+      row += 1 if a[column] == " "
+    end
+    row
+  end
+
+  #returns true if board is full
+  def board_full?
+    full_columns = 0
+    7.times do |column|
+      full_columns += 1 if column_full?(column)
+    end
+    full_columns == 7 ? true : false
+  end
 end
